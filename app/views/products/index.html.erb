@@ -1,0 +1,86 @@
+
+Hi <%=@user.first_name%>, <%= session[:user_id]%>  <a href="/show_all/index/<%= session[:user_id]%>">Go to All Products</a>  <a href="/logout/<%=session[:user_id]%>">logout</a>
+
+
+<p>Sell Product</p>
+  <form action="/products/sell" method="post">
+    		<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+    Name <input type="text" name="name">
+    Amount <input type="number" name="amount" placeholder="$0.00">
+     <input type="submit" value = "Sell">
+  </form> <br><br>
+
+  <p>Your products that are not yet sold</p>
+    <table>
+      <tr>
+        <th> Product</th>
+        <th> Date Posted</th>
+        <th> Amount</th>
+        <th> Action</th>
+      </tr>
+      <% for prod in @product%>
+      <tr>
+        <td> <%= prod.product  %> </td>
+        <td> <%= prod.created_at  %> </td>
+        <td> <%= prod.amount  %> </td>
+        <td> <a href="/products/remove/<%=prod.id%>">Remove</a> </td>
+      </tr>
+      <% end %>
+    </table> <br><br>
+
+  <p>Sales</p>
+    <table>
+      <tr>
+        <th> Product</th>
+        <th> Date Bought</th>
+        <th> Buyer</th>
+        <th> Amount</th>
+      </tr>
+      <%@sales.each do |sale|%>
+        <%if session[:user_id] == sale.seller and sale.buyer != nil%>
+          <tr>
+            <td><%= sale.product%></td>
+            <td><%= sale.updated_at%></td>
+
+            <td><%= sale.buyer%>
+              <% for user in @users%>
+                      <% if sale.buyer == user.id %>
+                        <%= user.first_name%>
+                      <%end%>
+              <% end %>
+            </td>
+
+            <td><%= sale.amount%></td>
+          </tr>
+          <%end%>
+        <%end%>
+    </table>
+    <p >Total: <%=@add_sales.inject(0, :+)%>
+    </p> <br>
+
+  <p>Purchases</p>
+    <table>
+      <tr>
+        <th> Product</th>
+        <th> Date Bought</th>
+        <th> Seller</th>
+        <th> Amount</th>
+      </tr>
+      <% for purchase in @purchases%>
+      <tr>
+        <td> <%=purchase.product%> </td>
+        <td> <%=purchase.updated_at%> </td>
+        <td>
+          <% for user in @users%>
+              <% if purchase.seller == user.id %>
+                <%= user.first_name%>
+              <%end%>
+          <% end %>
+        </td>
+        <td> <%=purchase.amount%> </td>
+      </tr>
+      <% end %>
+    </table>
+    <p>Total:
+      <%=@add_purchases.inject(0, :+)%>
+    </p><br>

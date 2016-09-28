@@ -1,0 +1,32 @@
+
+<a href="/logout/<%=session[:user_id]%>">Logout</a> | <a href="/products/index">Go To Dashboard</a>
+<p>
+  All Products
+</p>
+<table>
+  <tr>
+    <th> Product</th>
+    <th> Seller</th>
+    <th> Date Posted</th>
+    <th> Amount</th>
+    <th> Action</th>
+  </tr>
+  <% for product in @products%>
+    <% if product.seller != session[:user_id]%>
+  <tr>
+    <td> <%= product.product  %> </td>
+    <td> <% for user in @users%>
+            <% if product.seller == user.id %>
+              <%= user.first_name%>
+            <%end%>
+         <% end %>
+    </td>
+    <td> <%= product.created_at  %> </td>
+    <td> <%= product.amount  %> </td>
+    <td> <a href="/show_all/buy/<%=product.id%>">Buy</a> </td>
+  </tr>
+  <% end %>
+   <% end %>
+
+
+</table>
