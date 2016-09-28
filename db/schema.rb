@@ -13,6 +13,8 @@
 
 ActiveRecord::Schema.define(version: 20160928190015) do
 
+  enable_extension "plpgsql"
+
   create_table "products", force: true do |t|
     t.string   "product"
     t.integer  "seller"
