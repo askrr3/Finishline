@@ -16,6 +16,9 @@
 	</form>
 </div>
 <div style="display:inline-block; vertical-align:top">
+	<% if flash[:alert] %>
+	<%= flash[:alert] %>
+	<% end %>
 	<h1>login</h1>
 	<form action="/users/login" method="POST">
 		<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
@@ -24,6 +27,3 @@
 		<input type="submit" value="login">
 	</form>
 </div>
-<% if flash[:alert] %>
-<%= flash[:alert] %>
-<% end %>
