@@ -13,6 +13,7 @@
 
 ActiveRecord::Schema.define(version: 20160928190015) do
 
+  # changed from sqlite3
   enable_extension "plpgsql"
 
   create_table "products", force: true do |t|
